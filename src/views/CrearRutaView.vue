@@ -12,6 +12,7 @@ const latitud = ref("");
 const longitud = ref("");
 const guiaId = ref(null); // Opcional
 const mensaje = ref("");
+const guiasDisponibles = ref([]);
 
 const crearRuta = async () => {
   mensaje.value = ""; // Limpiar mensaje previo
@@ -41,11 +42,26 @@ const crearRuta = async () => {
     mensaje.value = result.message;
 
     if (result.status === "success") {
-      router.push("/rutas"); // Redirigir tras la creación
+      router.push("/crearruta"); // Redirigir tras la creación
     }
   } catch (error) {
     mensaje.value = "Error al crear la ruta.";
     console.error(error);
+  }
+};
+
+const obtenerGuiasDisponibles = async (newFecha) => {
+  if (newFecha) {
+    try {
+      const response = await fetch(`http://localhost/APIFreetours/api.php/asignaciones?fecha=${newFecha}`, {
+        method: 'GET',
+      });
+      const data = await response.json();
+      guiasDisponibles.value = data;
+      console.log('Guias disponibles en la fecha:', data);
+    } catch (error) {
+      console.error('Error al obtener guías disponibles:', error);
+    }
   }
 };
 </script>
@@ -72,7 +88,7 @@ const crearRuta = async () => {
       </div>
       <div>
         <label for="fecha">Fecha:</label>
-        <input id="fecha" v-model="fecha" type="date" required />
+        <input id="fecha" v-model="fecha" type="date" @change="obtenerGuiasDisponibles($event.target.value)" required />
       </div>
       <div>
         <label for="hora">Hora:</label>
@@ -88,7 +104,11 @@ const crearRuta = async () => {
       </div>
       <div>
         <label for="guiaId">ID del Guía (Opcional):</label>
-        <input id="guiaId" v-model="guiaId" type="number" />
+        <select id="guiaId" v-model="guiaId">
+          <option v-for="guia in guiasDisponibles" :key="guia.id" :value="guia.id">
+            {{ guia.nombre }}
+          </option>
+        </select>
       </div>
       <button type="submit">Crear Ruta</button>
     </form>
@@ -116,7 +136,7 @@ label {
   margin-bottom: 5px;
 }
 
-input, textarea {
+input, textarea, select {
   width: 100%;
   padding: 8px;
   border: 1px solid #ccc;

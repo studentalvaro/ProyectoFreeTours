@@ -25,8 +25,8 @@ const router = createRouter({
       component: () => import('../views/GestionUsuariosView.vue'),
     },
     {
-      path: '/cancelarruta',
-      name: 'Cancelar Ruta',
+      path: '/gestionarruta',
+      name: 'Gestionar Ruta',
       component: () => import('../views/CancelarRutasView.vue'),
     },
     {

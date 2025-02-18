@@ -5,7 +5,7 @@ import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
 import NavBar from './components/NavBar.vue'
 
-const datosSesion = ref(localStorage.getItem("sesion"));
+const datosSesion = ref(JSON.parse(localStorage.getItem("sesion")));
 
 //Función que actualiza los datos de sesión
 function actualizaDatosSesion(usuario){

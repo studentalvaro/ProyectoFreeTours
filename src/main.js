@@ -1,9 +1,14 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
+// filepath: /home/daw/Documents/DWEC/ProyectoFreeTours/src/main.js
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router';
 
-const app = createApp(App)
+// Importa Bootstrap CSS y JS
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
-app.use(router)
+const app = createApp(App);
 
-app.mount('#app')
+app.use(router);
+
+app.mount('#app');

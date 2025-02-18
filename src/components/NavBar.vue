@@ -11,7 +11,7 @@ const props = defineProps({
 <template>
 <div v-if="propSesion?.rol == 'admin'">
     <RouterLink to="/crearruta">Crear ruta</RouterLink>
-    <RouterLink to="/cancelarruta">Cancelar rutas</RouterLink>
+    <RouterLink to="/gestionarruta">Gestionar rutas</RouterLink>
     <RouterLink to="/gestionusuarios">Gestion usuarios</RouterLink>
 </div>
 <div v-if="propSesion?.rol== 'guia'">
