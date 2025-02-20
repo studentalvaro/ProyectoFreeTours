@@ -35,14 +35,10 @@ const router = createRouter({
       component: () => import('../views/CrearRutaView.vue'),
     },
     {
-      path: '/inforruta',
-      name: 'Información de la ruta',
-      component: () => import('../views/InfoRutaView.vue'),
-    },
-    {
-      path: '/reservar',
+      path: '/reservar/:id',
       name: 'Reservar Ruta',
       component: () => import('../views/ReservarRutaView.vue'),
+      props: true
     },
     {
       path: '/reservas',

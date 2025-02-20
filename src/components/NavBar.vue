@@ -15,13 +15,12 @@ const props = defineProps({
     <RouterLink to="/gestionusuarios">Gestion usuarios</RouterLink>
 </div>
 <div v-if="propSesion?.rol== 'guia'">
-    <RouterLink>Ver rutas</RouterLink>
-    <RouterLink>Asistentes</RouterLink>
+    <RouterLink to="/verrutas">Ver rutas</RouterLink>
+    <RouterLink to="/asistentes">Asistentes</RouterLink>
 </div>
 <div v-if="propSesion?.rol=='cliente'">
-    <RouterLink>Ver rutas</RouterLink>
-    <RouterLink>Reservar rutas</RouterLink>
-    <RouterLink>Cancelar rutas</RouterLink>
+    <RouterLink to="/reservas">Mis reservas</RouterLink>
+    <!--<RouterLink to="/reservar">Reservar rutas</RouterLink> //esto se supone que no aparecerá en el NavBar sino en la propia card de la ruta-->
 </div>
 </template>
 
