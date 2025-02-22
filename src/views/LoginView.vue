@@ -45,14 +45,50 @@ function iniciarSesion() {
 </script>
 
 <template>
-    <form @submit.prevent="iniciarSesion">
-        <p>{{ aviso }}</p>
-        <label for="user">Usuario</label>
-        <input v-model="form.email" name="user" type="text" placeholder="Usuario" required>
-        <label for="pass">Contraseña</label>
-        <input v-model="form.password" name="pass" type="password" placeholder="Contraseña" required>
-        <button type="submit">Iniciar sesión</button>
-    </form>
+    <div class="login-container">
+        <form @submit.prevent="iniciarSesion" class="p-4 border rounded shadow-sm bg-white">
+            <p>{{ aviso }}</p>
+            <div class="mb-3">
+                <label for="user" class="form-label"><strong>Usuario</strong></label>
+                <input v-model="form.email" name="user" type="text" class="form-control" placeholder="Usuario" required>
+            </div>
+            <div class="mb-3">
+                <label for="pass" class="form-label"><strong>Contraseña</strong></label>
+                <input v-model="form.password" name="pass" type="password" class="form-control" placeholder="Contraseña" required>
+            </div>
+            <button type="submit" class="btn btn-custom">Iniciar sesión</button>
+        </form>
+    </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('@/images/login-bg.jpg'); /* Ruta de la imagen de fondo */
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: #f1f1f1; /* Fondo suave de respaldo */
+}
+
+form {
+    max-width: 400px;
+    width: 100%;
+}
+
+.btn-custom {
+    background-color: #018481; /* Color para botones */
+    color: white;
+    width: 100%;
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.btn-custom:hover {
+    background-color: #016C6C; /* Color más oscuro en hover */
+}
+</style>

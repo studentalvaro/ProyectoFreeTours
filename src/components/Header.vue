@@ -1,7 +1,6 @@
 <script setup>
 import router from '@/router';
 import { RouterLink, useRoute } from 'vue-router';
-import { ref } from 'vue';
 
 const route = useRoute();
 const props = defineProps({
@@ -18,50 +17,54 @@ function cerrarSesion() {
 </script>
 
 <template>
-    <header>
-        <RouterLink to="/">
-            <img src="../images/logo.webp" alt="Free Tours Jaén" width="50px">
-        </RouterLink>
+    <header class="bg-light py-3 shadow-sm">
+        <div class="container d-flex justify-content-between align-items-center flex-wrap">
+            <RouterLink to="/" class="d-flex align-items-center">
+                <img src="../images/logo.jpg" alt="FreeSteps" width="80px">
+            </RouterLink>
 
-        <div v-if="propSesion">
-            <h2 v-if="route.path=='/'">¡Bienvenid@, {{ propSesion.nombre }}!</h2>
-            <h2 v-else> Estás en {{ route.name }}</h2>
-        </div>
+            <div v-if="propSesion" class="text-center text-sm-start">
+                <h2 class="h5 mb-0" v-if="route.path=='/'">¡Bienvenid@, {{ propSesion.nombre }}!</h2>
+                <h2 class="h5 mb-0" v-else> Estás en {{ route.name }}</h2>
+            </div>
 
-        <div>
-            <button v-if="!propSesion">
-                <RouterLink to="/login">Iniciar sesión</RouterLink>
-            </button>
-            <button v-if="!propSesion">
-                <RouterLink to="/registro">Registrarse</RouterLink>
-            </button>
-            <button v-if="propSesion" @click="cerrarSesion">
-                Cerrar Sesión
-            </button>
+            <div class="d-flex justify-content-center">
+                <RouterLink v-if="!propSesion" to="/login" class="btn" :class="{'btn-success': true, 'me-2': true, 'btn-sm': true}">Iniciar sesión</RouterLink>
+                <RouterLink v-if="!propSesion" to="/registro" class="btn btn-outline-success me-2 btn-sm">Registrarse</RouterLink>
+                <button v-if="propSesion" @click="cerrarSesion" class="btn btn-danger btn-sm">Cerrar Sesión</button>
+            </div>
         </div>
     </header>
 </template>
 
 <style scoped>
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background-color: #f9e0e6;
+h2 {
+    color: #018481;
 }
 
-button {
-    margin-left: 10px;
-    padding: 5px 10px;
-    background-color: #8e0d1e;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
+img {
+    border-radius: 45%;
 }
 
-button:hover {
-    background-color: #e34f65;
+.btn-success {
+    background-color: #018481 !important;
+    border-color: #018481 !important;
+}
+
+.btn-success:hover {
+    background-color: #016f69 !important;
+    border-color: #016f69 !important;
+}
+
+/* Para el botón de registrarse con clase btn-outline-success */
+.btn-outline-success {
+    color: #018481 !important;
+    border-color: #018481 !important;
+}
+
+.btn-outline-success:hover {
+    color: #ffffff !important;
+    background-color: #018481 !important;
+    border-color: #018481 !important;
 }
 </style>

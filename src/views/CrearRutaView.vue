@@ -2,6 +2,8 @@
 import { ref } from "vue";
 import router from "@/router";
 
+document.title = "Crear ruta";
+
 const titulo = ref("");
 const localidad = ref("");
 const descripcion = ref("");
@@ -14,7 +16,7 @@ const guiaId = ref(null); // Opcional
 const mensaje = ref("");
 const guiasDisponibles = ref([]);
 
-const crearRuta = async () => {
+const crearRuta = () => {
   mensaje.value = ""; // Limpiar mensaje previo
 
   const data = {
@@ -29,39 +31,39 @@ const crearRuta = async () => {
     guia_id: guiaId.value, // Puede ser null
   };
 
-  try {
-    const response = await fetch("http://localhost/APIFreetours/api.php/rutas", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
+  fetch("http://localhost/APIFreetours/api.php/rutas", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then(response => response.json())
+    .then(result => {
+      mensaje.value = result.message;
+      if (result.status === "success") {
+        router.push("/crearruta"); // Redirigir tras la creación
+      }
+    })
+    .catch(error => {
+      mensaje.value = "Error al crear la ruta.";
+      console.error(error);
     });
-
-    const result = await response.json();
-    mensaje.value = result.message;
-
-    if (result.status === "success") {
-      router.push("/crearruta"); // Redirigir tras la creación
-    }
-  } catch (error) {
-    mensaje.value = "Error al crear la ruta.";
-    console.error(error);
-  }
 };
 
-const obtenerGuiasDisponibles = async (newFecha) => {
+const obtenerGuiasDisponibles = (newFecha) => {
   if (newFecha) {
-    try {
-      const response = await fetch(`http://localhost/APIFreetours/api.php/asignaciones?fecha=${newFecha}`, {
-        method: 'GET',
+    fetch(`http://localhost/APIFreetours/api.php/asignaciones?fecha=${newFecha}`, {
+      method: 'GET',
+    })
+      .then(response => response.json())
+      .then(data => {
+        guiasDisponibles.value = data;
+        console.log('Guias disponibles en la fecha:', data);
+      })
+      .catch(error => {
+        console.error('Error al obtener guías disponibles:', error);
       });
-      const data = await response.json();
-      guiasDisponibles.value = data;
-      console.log('Guias disponibles en la fecha:', data);
-    } catch (error) {
-      console.error('Error al obtener guías disponibles:', error);
-    }
   }
 };
 </script>
@@ -119,11 +121,16 @@ const obtenerGuiasDisponibles = async (newFecha) => {
 <style scoped>
 .form-container {
   max-width: 600px;
-  margin: 0 auto;
-  background: #f9e0e6;
+  margin: 30px auto 0 auto; /* Separación de 30px desde el top */
+  background: #f1f1f1; /* Blanco suave para el fondo */
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  color: #2d2d2d; /* Gris oscuro */
 }
 
 form div {
@@ -144,7 +151,7 @@ input, textarea, select {
 }
 
 button {
-  background: #8e0d1e;
+  background: #018481; /* Verde oscuro */
   color: white;
   padding: 10px 15px;
   border: none;
@@ -153,12 +160,13 @@ button {
 }
 
 button:hover {
-  background: #e34f65;
+  background: #00D6B4; /* Verde claro */
 }
 
 .mensaje {
   margin-top: 20px;
   font-weight: bold;
-  color: #8e0d1e;
+  color: #018481; /* Rojo intenso */
 }
 </style>
+

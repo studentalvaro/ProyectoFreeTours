@@ -64,24 +64,58 @@ function crearUsuario() {
 </script>
 
 <template>
-
-    <body>
-        <div>
-            <form action="">
-                <p>{{ aviso }}</p>
-                <label for="name">Nombre</label>
-                <input v-model="form.nombre" name="name" id="name" type="text" placeholder="Nombre" required />
-                <label for="email">Email</label>
-                <input v-model="form.email" name="email" id="email" type="email" placeholder="Email" required>
-                <label for="password">Contraseña</label>
-                <input v-model="form.password" name="password" type="password" placeholder="Contraseña" required>
-                <label for="passwordCheck">Repetir contraseña</label>
-                <input v-model="form.password2" name="passwordCheck" type="password" placeholder="Repetir contraseña"
-                    required>
-                <button type="submit" @click.prevent="crearUsuario()">Registrarse</button>
-            </form>
-        </div>
-    </body>
+    <div class="registro-container">
+        <form @submit.prevent="crearUsuario" class="p-4 border rounded shadow-sm bg-white">
+            <p>{{ aviso }}</p>
+            <div class="mb-3">
+                <label for="name" class="form-label"><strong>Nombre</strong></label>
+                <input v-model="form.nombre" name="name" id="name" type="text" class="form-control" placeholder="Nombre" required />
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label"><strong>Email</strong></label>
+                <input v-model="form.email" name="email" id="email" type="email" class="form-control" placeholder="Email" required />
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label"><strong>Contraseña</strong></label>
+                <input v-model="form.password" name="password" type="password" class="form-control" placeholder="Contraseña" required />
+            </div>
+            <div class="mb-3">
+                <label for="passwordCheck" class="form-label"><strong>Repetir contraseña</strong></label>
+                <input v-model="form.password2" name="passwordCheck" type="password" class="form-control" placeholder="Repetir contraseña" required />
+            </div>
+            <button type="submit" class="btn btn-custom">Registrarse</button>
+        </form>
+    </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.registro-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('@/images/registro-bg.jpg'); /* Ruta de la imagen de fondo */
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: #f1f1f1; /* Fondo suave de respaldo */
+}
+
+form {
+    max-width: 400px;
+    width: 100%;
+}
+
+.btn-custom {
+    background-color: #018481; /* Color para botones */
+    color: white;
+    width: 100%;
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.btn-custom:hover {
+    background-color: #016C6C; /* Color más oscuro en hover */
+}
+</style>

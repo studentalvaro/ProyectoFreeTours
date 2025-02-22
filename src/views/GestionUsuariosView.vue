@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from "vue";
 
+document.title = "Gestión de usuarios";
+
 // Estado para los usuarios y roles disponibles
 const usuarios = ref([]);
 const rolesDisponibles = ["admin", "cliente", "guia"];
@@ -53,38 +55,55 @@ function eliminarUsuario(id) {
 </script>
 
 <template>
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Email</th>
-        <th>Rol</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="usuario in usuarios" :key="usuario.id">
-        <td>{{ usuario.id }}</td>
-        <td>{{ usuario.nombre }}</td>
-        <td>{{ usuario.email }}</td>
-        <td>
-          <select v-model="usuario.rol" @change="actualizarRol(usuario.id, usuario.rol)">
-            <option v-for="rol in rolesDisponibles" :key="rol" :value="rol">
-              {{ rol }}
-            </option>
-          </select>
-        </td>
-        <td>
-          <button @click="eliminarUsuario(usuario.id)" class="btn-eliminar">Eliminar</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="usuarios-container">
+    <h2>Gestión de Usuarios</h2>
+    <table class="usuarios-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Rol</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="usuario in usuarios" :key="usuario.id">
+          <td>{{ usuario.id }}</td>
+          <td>{{ usuario.nombre }}</td>
+          <td>{{ usuario.email }}</td>
+          <td>
+            <select v-model="usuario.rol" @change="actualizarRol(usuario.id, usuario.rol)">
+              <option v-for="rol in rolesDisponibles" :key="rol" :value="rol">
+                {{ rol }}
+              </option>
+            </select>
+          </td>
+          <td>
+            <button @click="eliminarUsuario(usuario.id)" class="btn-eliminar">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <style scoped>
-table {
+.usuarios-container {
+  background-color: #f1f1f1; /* Fondo blanco suave */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  margin: 20px auto;
+}
+
+h2 {
+  text-align: center;
+  color: #2d2d2d; /* Gris oscuro */
+}
+
+.usuarios-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
@@ -93,30 +112,31 @@ table {
 th, td {
   padding: 10px;
   text-align: left;
-  border: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
 }
 
 th {
-  background-color: #f9e0e6;
-  color: #8e0d1e;
+  background-color: #018481; /* Verde oscuro */
+  color: #ffffff; /* Texto blanco */
 }
 
 select {
-  padding: 4px;
+  padding: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
 
-button.btn-eliminar {
+.btn-eliminar {
   background-color: #e34f65;
   color: white;
   border: none;
   padding: 6px 12px;
   border-radius: 4px;
   cursor: pointer;
+  transition: background 0.3s;
 }
 
-button.btn-eliminar:hover {
+.btn-eliminar:hover {
   background-color: #c13c52;
 }
 </style>
