@@ -130,7 +130,7 @@ const obtenerGuiasDisponibles = (newFecha) => {
 
 h2 {
   text-align: center;
-  color: #2d2d2d; /* Gris oscuro */
+  color: #018481;
 }
 
 form div {

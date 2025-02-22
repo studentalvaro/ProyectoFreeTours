@@ -193,6 +193,9 @@ onMounted(() => {
 </template>
 
 <style scoped>
+h2 {
+  color: #018481;
+}
 .btn-success {
   background-color: #018481;
   border-color: #016C6C;

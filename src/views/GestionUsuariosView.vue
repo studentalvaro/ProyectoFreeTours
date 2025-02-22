@@ -100,7 +100,7 @@ function eliminarUsuario(id) {
 
 h2 {
   text-align: center;
-  color: #2d2d2d; /* Gris oscuro */
+  color: #018481;
 }
 
 .usuarios-table {
