@@ -19,7 +19,6 @@
                 <a href="https://facebook.com" target="_blank" class="social-icon bi bi-facebook"></a>
                 <a href="https://twitter.com" target="_blank" class="social-icon bi bi-twitter"></a>
                 <a href="https://instagram.com" target="_blank" class="social-icon bi bi-instagram"></a>
-                <a href="https://linkedin.com" target="_blank" class="social-icon bi bi-linkedin"></a>
             </div>
         </div>
     </footer>
@@ -27,8 +26,8 @@
 
 <style scoped>
 .footer-container {
-    background-color: #018481; /* Verde oscuro */
-    color: #ffffff; /* Texto blanco */
+    background-color: #018481;
+    color: #ffffff;
     padding: 20px 0;
 }
 
@@ -50,7 +49,7 @@
 }
 
 .footer-link:hover {
-    color: #00D6B4; /* Verde claro */
+    color: #00D6B4;
 }
 
 .social-icons {
@@ -64,6 +63,6 @@
 }
 
 .social-icon:hover {
-    color: #00D6B4; /* Verde claro */
+    color: #00D6B4;
 }
 </style>

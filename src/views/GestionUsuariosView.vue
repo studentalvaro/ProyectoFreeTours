@@ -46,7 +46,7 @@ function eliminarUsuario(id) {
       .then(data => {
         console.log(`Usuario con ID ${id} eliminado:`, data);
         alert(`Usuario con ID ${id} eliminado correctamente`);
-        // Actualizar la lista de usuarios eliminando el usuario localmente
+        // Actualizamos la lista de usuarios eliminando el usuario localmente
         usuarios.value = usuarios.value.filter(usuario => usuario.id !== id);
       })
       .catch(error => console.error('Error al eliminar el usuario:', error));
@@ -90,7 +90,7 @@ function eliminarUsuario(id) {
 
 <style scoped>
 .usuarios-container {
-  background-color: #f1f1f1; /* Fondo blanco suave */
+  background-color: #f1f1f1;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
@@ -116,8 +116,8 @@ th, td {
 }
 
 th {
-  background-color: #018481; /* Verde oscuro */
-  color: #ffffff; /* Texto blanco */
+  background-color: #018481;
+  color: #ffffff;
 }
 
 select {

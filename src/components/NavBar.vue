@@ -27,21 +27,21 @@ const props = defineProps({
 
 <style scoped>
 .navbar-container {
-  background-color: #018481; /* Fondo verde oscuro */
+  background-color: #018481;
   padding: 15px 0;
-  border-bottom: 2px solid #016C6C; /* Línea de separación más oscura */
+  border-bottom: 2px solid #016C6C;
 }
 
 .nav-link {
-  color: #ffffff; /* Texto blanco para contraste */
+  color: #ffffff;
   text-decoration: none;
   font-weight: bold;
-  margin: 0 15px; /* Espaciado entre enlaces */
+  margin: 0 15px;
   transition: color 0.3s ease-in-out;
 }
 
 .nav-link:hover {
-  color: #00D6B4; /* Verde claro para hover */
+  color: #00D6B4;
   text-decoration: none;
 }
 </style>

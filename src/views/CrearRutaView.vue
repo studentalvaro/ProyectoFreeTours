@@ -12,12 +12,12 @@ const fecha = ref("");
 const hora = ref("");
 const latitud = ref("");
 const longitud = ref("");
-const guiaId = ref(null); // Opcional
+const guiaId = ref(null);
 const mensaje = ref("");
 const guiasDisponibles = ref([]);
 
 const crearRuta = () => {
-  mensaje.value = ""; // Limpiar mensaje previo
+  mensaje.value = ""; //Limpiamos el mensaje
 
   const data = {
     titulo: titulo.value,
@@ -28,7 +28,7 @@ const crearRuta = () => {
     hora: hora.value,
     latitud: latitud.value,
     longitud: longitud.value,
-    guia_id: guiaId.value, // Puede ser null
+    guia_id: guiaId.value,
   };
 
   fetch("http://localhost/APIFreetours/api.php/rutas", {
@@ -42,7 +42,7 @@ const crearRuta = () => {
     .then(result => {
       mensaje.value = result.message;
       if (result.status === "success") {
-        router.push("/crearruta"); // Redirigir tras la creación
+        router.push("/crearruta");
       }
     })
     .catch(error => {
@@ -121,8 +121,8 @@ const obtenerGuiasDisponibles = (newFecha) => {
 <style scoped>
 .form-container {
   max-width: 600px;
-  margin: 30px auto 0 auto; /* Separación de 30px desde el top */
-  background: #f1f1f1; /* Blanco suave para el fondo */
+  margin: 30px auto 0 auto;
+  background: #f1f1f1;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -151,7 +151,7 @@ input, textarea, select {
 }
 
 button {
-  background: #018481; /* Verde oscuro */
+  background: #018481;
   color: white;
   padding: 10px 15px;
   border: none;
@@ -160,13 +160,13 @@ button {
 }
 
 button:hover {
-  background: #00D6B4; /* Verde claro */
+  background: #00D6B4;
 }
 
 .mensaje {
   margin-top: 20px;
   font-weight: bold;
-  color: #018481; /* Rojo intenso */
+  color: #018481;
 }
 </style>
 

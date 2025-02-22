@@ -151,14 +151,4 @@ onMounted(() => {
   background-color: #016C6C;
   border-color: #016C6C;
 }
-
-.btn-secondary {
-  background-color: #e34f65;
-  border-color: #e34f65;
-}
-
-.btn-secondary:hover {
-  background-color: #8d0d1b;
-  border-color: #8d0d1b;
-}
 </style>

@@ -137,7 +137,6 @@ onMounted(fetchReservas);
 .contenedor {
     max-width: 1200px;
     margin: auto;
-    text-align: center;
 }
 
 .section-title {
@@ -159,15 +158,5 @@ onMounted(fetchReservas);
     height: auto;
     object-fit: cover;
     border-radius: 0;
-}
-
-.btn-danger {
-    background-color: #e34f65;
-    border-color: #e34f65;
-}
-
-.btn-danger:hover {
-    background-color: #8d0d1b;
-    border-color: #8d0d1b;
 }
 </style>

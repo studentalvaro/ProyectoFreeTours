@@ -94,11 +94,11 @@ function crearUsuario() {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-image: url('@/images/registro-bg.jpg'); /* Ruta de la imagen de fondo */
+    background-image: url('@/images/registro-bg.jpg');
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
-    background-color: #f1f1f1; /* Fondo suave de respaldo */
+    background-color: #f1f1f1;
 }
 
 form {
@@ -107,7 +107,7 @@ form {
 }
 
 .btn-custom {
-    background-color: #018481; /* Color para botones */
+    background-color: #018481;
     color: white;
     width: 100%;
     border: none;
@@ -116,6 +116,6 @@ form {
 }
 
 .btn-custom:hover {
-    background-color: #016C6C; /* Color más oscuro en hover */
+    background-color: #016C6C;
 }
 </style>

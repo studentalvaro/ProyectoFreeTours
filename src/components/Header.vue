@@ -56,7 +56,6 @@ img {
     border-color: #016f69 !important;
 }
 
-/* Para el botón de registrarse con clase btn-outline-success */
 .btn-outline-success {
     color: #018481 !important;
     border-color: #018481 !important;

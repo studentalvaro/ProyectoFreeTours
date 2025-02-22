@@ -96,53 +96,50 @@ onMounted(() => {
 </template>
 
 <style scoped>
-/* Contenedor del video */
 .video-container {
   height: 400px;
   overflow: hidden;
 }
 
-/* Ajustes para que el video cubra la pantalla */
 .video-container video {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-/* Mensaje sobre el video */
+/* Texto que hemos puesto en el video */
 .video-text {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-/* Resaltar FreeSteps */
 .highlight {
   color: #FFD700; /* Dorado */
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 
-/* Estilo para el párrafo de información */
+/* Estilo para el párrafo de información que creo que no voy a usar */
 .info-container {
   background-color: #ffffff;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 -4px 8px rgba(0, 0, 0, 0.1); /* Sombra arriba y abajo */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 -4px 8px rgba(0, 0, 0, 0.1);
   padding: 40px;
-  margin-top: 40px; /* Separación del video */
+  margin-top: 40px;
   text-align: center;
 }
 
 .info-text {
-  font-size: 1.5rem; /* Aumentar el tamaño del texto */
-  color: #018481; /* Color del texto igual al de los botones */
+  font-size: 1.5rem;
+  color: #018481;
   line-height: 1.6;
 }
 
 .info-text strong {
-  color: #018481; /* Verde oscuro para resaltar ciertas palabras */
+  color: #018481;
 }
-
-/* Botones con clase btn-success */
+/*He utilizado !important puesto que como la clase de bootstrap ya tiene sus valores por defecto,
+para interponer mis colores tengo que utilizar !important sí o sí.*/
 .btn-success {
   background-color: #018481 !important;
   border-color: #018481 !important;
@@ -153,7 +150,6 @@ onMounted(() => {
   border-color: #016f69 !important;
 }
 
-/* Para el hover en los botones de las cards de reserva */
 .card .btn-success {
   color: #ffffff !important;
   background-color: #018481 !important;
