@@ -9,6 +9,11 @@ const sesion = ref(localStorage.getItem("sesion") !== null);
 const router = useRouter();
 const filtroCiudad = ref("");
 
+// Variables para la paginación
+const currentPage = ref(1);
+const itemsPerPage = 6;
+
+// Obtener rutas desde la API
 function obtenerRutas() {
   fetch('http://localhost/APIFreetours/api.php/rutas', {
     method: 'GET',
@@ -38,17 +43,37 @@ const formatearFecha = (fecha) => {
 const rutasFiltradas = computed(() => {
   return rutas.value.map(ruta => ({
     ...ruta,
-    horaFormateada: formatearHora(ruta.hora), // Agregar hora formateada
-    fechaFormateada: formatearFecha(ruta.fecha) // Agregar fecha formateada
+    horaFormateada: formatearHora(ruta.hora),
+    fechaFormateada: formatearFecha(ruta.fecha)
   })).filter(ruta =>
     ruta.localidad.toLowerCase().includes(filtroCiudad.value.toLowerCase())
   );
 });
 
+// Calcular el número total de páginas
+const totalPages = computed(() => {
+  return Math.ceil(rutasFiltradas.value.length / itemsPerPage);
+});
+
+// Obtener las rutas para la página actual
+const rutasPaginadas = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  return rutasFiltradas.value.slice(start, end);
+});
+
+// Cambiar de página
+const changePage = (page) => {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page;
+  }
+};
+
 onMounted(() => {
   obtenerRutas();
 });
 </script>
+
 <template>
   <!-- Sección Video -->
   <div class="video-container position-relative">
@@ -71,7 +96,7 @@ onMounted(() => {
 
     <!-- Tarjetas de Tours -->
     <div id="cards-tours" class="row">
-      <div class="col-12 col-sm-6 col-md-4 mb-4" v-for="ruta in rutasFiltradas" :key="ruta.id">
+      <div class="col-12 col-sm-6 col-md-4 mb-4" v-for="ruta in rutasPaginadas" :key="ruta.id">
         <div class="card h-100 shadow-sm rounded-3">
           <img :src="ruta.foto" class="card-img-top rounded-3 p-3" alt="Imagen de la ruta" style="object-fit: cover; height: 200px;">
           <div class="card-body d-flex flex-column">
@@ -92,6 +117,21 @@ onMounted(() => {
         </div>
       </div>
     </div>
+
+    <!-- Controles de Paginación -->
+    <nav aria-label="Page navigation" class="mt-4">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" :class="{ disabled: currentPage === 1 }">
+          <button class="page-link" @click="changePage(currentPage - 1)">Anterior</button>
+        </li>
+        <li class="page-item" v-for="page in totalPages" :key="page" :class="{ active: currentPage === page }">
+          <button class="page-link" @click="changePage(page)">{{ page }}</button>
+        </li>
+        <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+          <button class="page-link" @click="changePage(currentPage + 1)">Siguiente</button>
+        </li>
+      </ul>
+    </nav>
   </div>
 </template>
 
@@ -107,7 +147,6 @@ onMounted(() => {
   object-fit: cover;
 }
 
-/* Texto que hemos puesto en el video */
 .video-text {
   top: 50%;
   left: 50%;
@@ -115,7 +154,7 @@ onMounted(() => {
 }
 
 .highlight {
-  color: #FFD700; /* Dorado */
+  color: #FFD700;
   text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
 
@@ -160,5 +199,22 @@ para interponer mis colores tengo que utilizar !important sí o sí.*/
   color: #ffffff !important;
   background-color: #016f69 !important;
   border-color: #016f69 !important;
+}
+
+/* Estilos personalizados para la paginación */
+.pagination .page-link {
+  color: #018481 !important;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #018481 !important;
+  border-color: #018481 !important;
+  color: white !important;
+}
+
+.pagination .page-link:hover {
+  background-color: #016f69 !important;
+  border-color: #016f69 !important;
+  color: #ffffff !important;
 }
 </style>

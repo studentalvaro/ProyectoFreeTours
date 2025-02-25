@@ -66,7 +66,6 @@ function crearUsuario() {
 <template>
     <div class="registro-container">
         <form @submit.prevent="crearUsuario" class="p-4 border rounded shadow-sm bg-white">
-            <p>{{ aviso }}</p>
             <div class="mb-3">
                 <label for="name" class="form-label"><strong>Nombre</strong></label>
                 <input v-model="form.nombre" name="name" id="name" type="text" class="form-control" placeholder="Nombre" required />
@@ -83,7 +82,12 @@ function crearUsuario() {
                 <label for="passwordCheck" class="form-label"><strong>Repetir contraseña</strong></label>
                 <input v-model="form.password2" name="passwordCheck" type="password" class="form-control" placeholder="Repetir contraseña" required />
             </div>
+            <p style="color:red">{{ aviso }}</p>
             <button type="submit" class="btn btn-custom">Registrarse</button>
+            <br>
+            <br>
+            <p>¿Ya tienes cuenta? <RouterLink to="/login" style="color: #018481;">Iniciar sesión</RouterLink></p>
+
         </form>
     </div>
 </template>

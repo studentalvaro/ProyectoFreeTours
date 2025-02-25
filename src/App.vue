@@ -16,6 +16,7 @@ function actualizaDatosSesion(usuario){
 <template>
   <!--Header-->
   <Header :propSesion="datosSesion" @sesionCerrada="actualizaDatosSesion"></Header>
+  
   <!--Nav-->
   <NavBar :propSesion="datosSesion"></NavBar>
 

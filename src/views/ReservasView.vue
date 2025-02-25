@@ -1,5 +1,7 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, nextTick } from 'vue';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
 document.title = "Mis reservas";
 
@@ -7,6 +9,7 @@ const sesion = JSON.parse(localStorage.getItem('sesion')) || {};
 const userEmail = sesion.email || '';
 const reservasPendientes = ref([]);
 const reservasRealizadas = ref([]);
+const mapas = ref({});
 
 const fetchReservas = () => {
     if (!userEmail) {
@@ -27,13 +30,15 @@ const fetchReservas = () => {
                 fetchRuta(reserva.ruta_id, (rutaDetalles) => {
                     const fechaISO = rutaDetalles ? rutaDetalles.fecha : '';
                     const reservaConDetalles = {
-                        id: reserva.ruta_id,
+                        id: reserva.reserva_id,
                         titulo: rutaDetalles ? rutaDetalles.titulo : 'Sin título',
                         localidad: rutaDetalles ? rutaDetalles.localidad : 'Sin localidad',
                         fecha: fechaISO ? formatFecha(fechaISO) : 'Desconocida',
                         fechaISO: fechaISO,
                         hora: rutaDetalles ? formatHora(rutaDetalles.hora) : 'Desconocida',
                         foto: rutaDetalles ? rutaDetalles.foto : '',
+                        latitud: rutaDetalles ? rutaDetalles.latitud : null,
+                        longitud: rutaDetalles ? rutaDetalles.longitud : null,
                     };
 
                     reservasConDetalles.push(reservaConDetalles);
@@ -43,6 +48,13 @@ const fetchReservas = () => {
                         const now = new Date();
                         reservasPendientes.value = reservasConDetalles.filter(reserva => new Date(`${reserva.fechaISO}T${reserva.hora}`) >= now);
                         reservasRealizadas.value = reservasConDetalles.filter(reserva => new Date(`${reserva.fechaISO}T${reserva.hora}`) < now);
+                        nextTick(() => {
+                            reservasConDetalles.forEach(reserva => {
+                                if (reserva.latitud && reserva.longitud) {
+                                    initMap(reserva.id, reserva.latitud, reserva.longitud);
+                                }
+                            });
+                        });
                     }
                 });
             });
@@ -93,9 +105,22 @@ const formatHora = (hora) => {
     return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
 };
 
+const initMap = (reservaId, lat, lon) => {
+    const mapContainer = document.getElementById(`map-${reservaId}`);
+    if (mapContainer) {
+        const map = L.map(mapContainer).setView([lat, lon], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+        L.marker([lat, lon]).addTo(map)
+            .bindPopup(`Latitud: ${lat}, Longitud: ${lon}`)
+            .openPopup();
+        mapas.value[reservaId] = map;
+    }
+};
+
 onMounted(fetchReservas);
 </script>
-
 
 <template>
     <div class="contenedor">        
@@ -111,6 +136,7 @@ onMounted(fetchReservas);
                         <p class="card-text"><strong>Hora:</strong> {{ reserva.hora }}</p>
                         <button class="btn btn-danger btn-sm" @click="eliminarReserva(reserva.id)">Eliminar</button>
                     </div>
+                    <div :id="`map-${reserva.id}`" class="map"></div>
                 </div>
             </div>
         </div>
@@ -125,8 +151,9 @@ onMounted(fetchReservas);
                         <p class="card-text"><strong>Localidad:</strong> {{ reserva.localidad }}</p>
                         <p class="card-text"><strong>Fecha:</strong> {{ reserva.fecha }}</p>
                         <p class="card-text"><strong>Hora:</strong> {{ reserva.hora }}</p>
-                        <button class="btn btn-danger btn-sm" @click="eliminarReserva(reserva.id)">Eliminar</button>
+                        <button class="btn btn-warning btn-sm">Valorar</button>
                     </div>
+                    <div :id="`map-${reserva.id}`" class="map"></div>
                 </div>
             </div>
         </div>
@@ -158,5 +185,15 @@ onMounted(fetchReservas);
     height: auto;
     object-fit: cover;
     border-radius: 0;
+}
+
+.map {
+    width: 300px;
+    height: 200px;
+    margin: 20px;
+}
+
+.btn-warning {
+    color: white !important;
 }
 </style>

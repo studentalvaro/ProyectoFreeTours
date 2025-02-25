@@ -3,11 +3,10 @@ import { ref } from "vue";
 
 document.title = "Gestión de usuarios";
 
-// Estado para los usuarios y roles disponibles
 const usuarios = ref([]);
 const rolesDisponibles = ["admin", "cliente", "guia"];
 
-// Obtener la lista de usuarios desde la API
+// Obtener la lista de usuarios
 fetch('http://localhost/APIFreetours/api.php/usuarios', {
   method: 'GET',
 })
@@ -17,7 +16,7 @@ fetch('http://localhost/APIFreetours/api.php/usuarios', {
   })
   .catch(error => console.error('Error al cargar usuarios:', error));
 
-// Función para actualizar el rol de un usuario usando la API (PUT)
+// Función para actualizar el rol de un usuario
 function actualizarRol(id, nuevoRol) {
   const updatedRole = { rol: nuevoRol };
 
@@ -36,7 +35,7 @@ function actualizarRol(id, nuevoRol) {
     .catch(error => console.error('Error al actualizar el rol:', error));
 }
 
-// Función para eliminar un usuario usando la API (DELETE)
+// Función para eliminar un usuario
 function eliminarUsuario(id) {
   if (confirm(`¿Estás seguro de que deseas eliminar al usuario con ID ${id}?`)) {
     fetch(`http://localhost/APIFreetours/api.php/usuarios?id=${id}`, {

@@ -1,10 +1,14 @@
 <script setup>
 import { ref, onMounted } from "vue";
+import { Modal } from 'bootstrap';
 
 document.title = "Ver rutas";
 
 const asignaciones = ref([]);
 const rutas = ref([]);
+const asistentes = ref([]);
+const rutaSeleccionada = ref(null);
+let modalInstance = null;
 
 onMounted(() => {
     const sesion = JSON.parse(localStorage.getItem("sesion"));
@@ -18,20 +22,37 @@ onMounted(() => {
         .then(response => response.json())
         .then(data => {
             asignaciones.value = data;
-            /*Estaba intentando hacer 2 fetch, por una parte el de las asignaciones por id del guia
-            después obteniendo el id de la ruta de cada asignación, para hacer un fetch de las rutas
-            por id de la ruta, pero no me salió, así que lo hice de la siguiente manera:
-            */
-            const rutasPromises = data.map(asignacion =>
-                fetch(`http://localhost/APIFreetours/api.php/rutas?id=${asignacion.ruta_id}`)
-                    .then(res => res.json())
-            );
-            
-            Promise.all(rutasPromises).then(results => {
-                rutas.value = results;
-            });
+            rutas.value = data.map(asignacion => ({
+                id: asignacion.ruta_id,
+                titulo: asignacion.ruta_titulo,
+                localidad: asignacion.ruta_localidad,
+                fecha: asignacion.ruta_fecha,
+                hora: asignacion.ruta_hora,
+                reserva: asignacion.reservas
+            }));
         })
-        .catch(error => console.error("Error al obtener las asignaciones o rutas:", error));
+        .catch(error => console.error("Error al obtener las asignaciones:", error));
+});
+
+const mostrarModalAsistentes = (ruta) => {
+    rutaSeleccionada.value = ruta;
+        if (modalInstance) {
+                modalInstance.show();
+        }
+
+};
+
+const cerrarModalAsistentes = () => {
+    if (modalInstance) {
+        modalInstance.hide();
+    }
+};
+
+onMounted(() => {
+    const modalElement = document.getElementById('asistentesModal');
+    if (modalElement) {
+        modalInstance = new Modal(modalElement);
+    }
 });
 </script>
 
@@ -44,17 +65,48 @@ onMounted(() => {
                 <span>Localidad: {{ ruta.localidad }}</span><br>
                 <span>Fecha: {{ ruta.fecha }}</span><br>
                 <span>Hora: {{ ruta.hora }}</span><br>
-                <span>Asistentes: {{ ruta.asistentes }}</span>
+                <button class="btn btn-primary btn-sm mt-2" @click="mostrarModalAsistentes(ruta)">Ver Asistentes</button>
             </li>
         </ul>
+    </div>
+
+    <!-- Modal Asistentes -->
+    <div class="modal fade" id="asistentesModal" tabindex="-1" aria-labelledby="asistentesModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #018481; color: white;">
+                    <h5 class="modal-title" id="asistentesModalLabel">Asistentes</h5>
+                    <button type="button" class="btn-close" @click="cerrarModalAsistentes" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Ruta:</strong> {{ rutaSeleccionada?.titulo }}</p>
+                    <ul class="list-group">
+                        <li class="list-group-item" v-for="reserva in rutaSeleccionada?.reserva">
+                            {{ reserva.cliente.nombre }} - {{ reserva.num_personas }} asistentes
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @click="cerrarModalAsistentes">Cerrar</button>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <style scoped>
-    h2 {
-        color: #018481;
-    }
-    .text-success {
-        color: #018481 !important;
-    }
+h2 {
+    color: #018481;
+}
+.text-success {
+    color: #018481 !important;
+}
+.btn-primary {
+    background-color: #018481 !important;
+    border-color: #018481 !important;
+}
+.btn-primary:hover {
+    background-color: #016f69 !important;
+    border-color: #016f69 !important;
+}
 </style>

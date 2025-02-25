@@ -57,6 +57,9 @@ function iniciarSesion() {
                 <input v-model="form.password" name="pass" type="password" class="form-control" placeholder="Contraseña" required>
             </div>
             <button type="submit" class="btn btn-custom">Iniciar sesión</button>
+            <br>
+            <br>
+            <p>¿No tienes cuenta? <RouterLink to="/registro" style="color: #018481;">Regístrate gratis</RouterLink></p>
         </form>
     </div>
 </template>

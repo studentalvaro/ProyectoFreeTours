@@ -6,7 +6,6 @@ document.title = "Reservar";
 
 const route = useRoute();
 const ruta = ref(null);
-const email = ref("");
 const numPersonas = ref(1);
 const mensaje = ref("");
 const reservaModalRef = ref(null);
@@ -38,7 +37,7 @@ const cerrarModalReserva = () => {
 
 const crearReserva = () => {
   const reservaData = {
-    email: email.value,
+    email: JSON.parse(localStorage.getItem("sesion")).email,
     ruta_id: route.params.id,
     num_personas: numPersonas.value
   };
@@ -94,10 +93,6 @@ onMounted(() => {
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="cerrarModalReserva"></button>
           </div>
           <div class="modal-body">
-            <div class="mb-3">
-              <label for="email" class="form-label">Email</label>
-              <input type="email" id="email" v-model="email" class="form-control" required>
-            </div>
             <div class="mb-3">
               <label for="numPersonas" class="form-label">Número de Personas</label>
               <input type="number" id="numPersonas" v-model="numPersonas" class="form-control" min="1" required>

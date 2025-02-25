@@ -1,6 +1,8 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import router from "@/router";
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
 document.title = "Crear ruta";
 
@@ -10,14 +12,16 @@ const descripcion = ref("");
 const foto = ref("");
 const fecha = ref("");
 const hora = ref("");
-const latitud = ref("");
-const longitud = ref("");
 const guiaId = ref(null);
 const mensaje = ref("");
+const latitud = ref("");
+const longitud = ref("");
 const guiasDisponibles = ref([]);
+const address = ref('');
+let map, marker;
 
 const crearRuta = () => {
-  mensaje.value = ""; //Limpiamos el mensaje
+  mensaje.value = "";
 
   const data = {
     titulo: titulo.value,
@@ -66,6 +70,44 @@ const obtenerGuiasDisponibles = (newFecha) => {
       });
   }
 };
+//Leaflet
+const searchLocation = async () => {
+  if (!address.value) return;
+
+  const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address.value)}`);
+  const data = await response.json();
+
+  if (data.length > 0) {
+    let lat = data[0].lat;
+    let lon = data[0].lon;
+    if (marker) marker.remove();
+    marker = L.marker([lat, lon]).addTo(map)
+      .bindPopup(address.value)
+      .openPopup();
+    map.setView([lat, lon], 13);
+    latitud.value = lat;
+    longitud.value = lon;
+  } else {
+    alert('Dirección no encontrada');
+  }
+};
+
+onMounted(() => {
+  map = L.map('map').setView([40.4168, -3.7038], 13); // Madrid por defecto
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  map.on('click', function(e) {
+    if (marker) marker.remove();
+    marker = L.marker(e.latlng).addTo(map)
+      .bindPopup(`Latitud: ${e.latlng.lat}, Longitud: ${e.latlng.lng}`)
+      .openPopup();
+    latitud.value = e.latlng.lat;
+    longitud.value = e.latlng.lng;
+  });
+});
 </script>
 
 <template>
@@ -97,15 +139,11 @@ const obtenerGuiasDisponibles = (newFecha) => {
         <input id="hora" v-model="hora" type="time" required />
       </div>
       <div>
-        <label for="latitud">Latitud:</label>
-        <input id="latitud" v-model="latitud" type="number" step="any" required />
-      </div>
+      <input v-model="address" @keyup.enter="searchLocation" placeholder="Buscar dirección" class="input" />
+    </div>
+    <div id="map" style="height: 400px; margin-top: 20px;"></div>
       <div>
-        <label for="longitud">Longitud:</label>
-        <input id="longitud" v-model="longitud" type="number" step="any" required />
-      </div>
-      <div>
-        <label for="guiaId">ID del Guía (Opcional):</label>
+        <label for="guiaId">ID del Guía</label>
         <select id="guiaId" v-model="guiaId">
           <option v-for="guia in guiasDisponibles" :key="guia.id" :value="guia.id">
             {{ guia.nombre }}
@@ -168,5 +206,12 @@ button:hover {
   font-weight: bold;
   color: #018481;
 }
-</style>
 
+.input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+</style>
