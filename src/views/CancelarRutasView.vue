@@ -127,22 +127,23 @@ onMounted(() => {
     }
   });
 });
+
 const actualizarRuta = (ruta) => {
   const asignacionData = {
     ruta_id: ruta.id,
     guia_id: ruta.guia_id
-};
+  };
 
-fetch('http://localhost/APIFreetours/api.php/asignaciones', {
+  fetch('http://localhost/APIFreetours/api.php/asignaciones', {
     method: 'POST',
     headers: {
-        'Content-Type': 'application/json'
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify(asignacionData)
-})
-.then(response => response.json())
-.then(data => console.log('Respuesta:', data))
-.catch(error => console.error('Error:', error));
+  })
+  .then(response => response.json())
+  .then(data => console.log('Respuesta:', data))
+  .catch(error => console.error('Error:', error));
 }
 </script>
 
@@ -152,13 +153,13 @@ fetch('http://localhost/APIFreetours/api.php/asignaciones', {
     <ul class="list-group">
       <li v-for="ruta in rutas" :key="ruta.id" class="list-group-item d-flex justify-content-between align-items-center">
         <span><strong>{{ ruta.titulo }}</strong> - {{ ruta.localidad }} - {{ ruta.fecha }} - {{ ruta.hora }}</span>
-        <div>
+        <div class="d-flex align-items-center">
           <!--Este select permite modificar el guia-->
-          <select v-model="ruta.guia_id" @focus="obtenerGuiasDisponibles(ruta.fecha)" @change="actualizarRuta(ruta)" class="form-select form-select-sm">
+          <select v-model="ruta.guia_id" @focus="obtenerGuiasDisponibles(ruta.fecha)" @change="actualizarRuta(ruta)" class="form-select form-select-sm me-2">
             <option :value="ruta.guia_id" disabled>{{ ruta.guia_nombre }}</option>
             <option v-for="guia in guiasDisponibles" :key="guia.id" :value="guia.id">{{ guia.nombre }}</option>
           </select>
-          <button @click="mostrarModalDuplicar(ruta)" class="btn btn-success btn-sm">Duplicar</button>
+          <button @click="mostrarModalDuplicar(ruta)" class="btn btn-success btn-sm me-2">Duplicar</button>
           <button @click="mostrarModalEliminar(ruta)" class="btn btn-danger btn-sm">Eliminar</button>
         </div>
       </li>

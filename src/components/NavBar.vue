@@ -12,7 +12,7 @@ const props = defineProps({
     <div v-if="propSesion?.rol == 'admin'" class="d-flex justify-content-center">
       <RouterLink to="/" class="nav-link">Ver tours</RouterLink>
       <RouterLink to="/crearruta" class="nav-link">Crear ruta</RouterLink>
-      <RouterLink to="/gestionarruta" class="nav-link">Gestionar rutas</RouterLink>
+      <RouterLink to="/gestionarruta" class="nav-link">Gestión rutas</RouterLink>
       <RouterLink to="/gestionusuarios" class="nav-link">Gestión usuarios</RouterLink>
     </div>
     

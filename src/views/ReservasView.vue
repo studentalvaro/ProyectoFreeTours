@@ -113,8 +113,6 @@ const initMap = (reservaId, lat, lon) => {
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
         L.marker([lat, lon]).addTo(map)
-            .bindPopup(`Latitud: ${lat}, Longitud: ${lon}`)
-            .openPopup();
         mapas.value[reservaId] = map;
     }
 };
@@ -134,7 +132,10 @@ onMounted(fetchReservas);
                         <p class="card-text"><strong>Localidad:</strong> {{ reserva.localidad }}</p>
                         <p class="card-text"><strong>Fecha:</strong> {{ reserva.fecha }}</p>
                         <p class="card-text"><strong>Hora:</strong> {{ reserva.hora }}</p>
-                        <button class="btn btn-danger btn-sm" @click="eliminarReserva(reserva.id)">Eliminar</button>
+                        <button class="btn btn-primary btn-sm">Modificar reserva</button>
+                        <br>
+                        <br>
+                        <button class="btn btn-danger btn-sm" @click="eliminarReserva(reserva.id)">Cancelar reserva</button>
                     </div>
                     <div :id="`map-${reserva.id}`" class="map"></div>
                 </div>
@@ -165,7 +166,9 @@ onMounted(fetchReservas);
     max-width: 1200px;
     margin: auto;
 }
-
+.btn-primary{
+    background-color: #018481;
+}
 .section-title {
     margin-top: 40px;
     margin-bottom: 20px;

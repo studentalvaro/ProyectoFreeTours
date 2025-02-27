@@ -6,6 +6,7 @@ document.title = "Registro";
 
 const form = ref({ nombre: '', email: '', password: '', password2: '' });
 const aviso = ref('');
+const avisoColor = ref('red');
 
 //COMPROBACION 1: Función que comprueba si los campos están vacíos.
 function isEmpty(str) {
@@ -21,13 +22,14 @@ function validacontrasena(password) {
 function crearUsuario() {
     if (isEmpty(form.value.nombre) || isEmpty(form.value.email) || isEmpty(form.value.password) || isEmpty(form.value.password2)) {
         aviso.value = "Usuario, contraseña y repetir contraseña son obligatorios.";
+        avisoColor.value = 'red';
     } else if (!validacontrasena(form.value.password)) {
         aviso.value = "La contraseña debe incluir al menos una mayúscula, un número y un carácter especial.";
+        avisoColor.value = 'red';
     } else if (form.value.password !== form.value.password2) {
         aviso.value = "Las contraseñas no coinciden.";
+        avisoColor.value = 'red';
     } else {
-        aviso.value = "Usuario registrado";
-
         // Datos para enviar en el fetch
         const data = {
             nombre: form.value.nombre,
@@ -50,17 +52,22 @@ function crearUsuario() {
                 return response.json();
             })
             .then(responseData => {
+                aviso.value = "Usuario registrado";
+                avisoColor.value = 'green';
                 console.log('Usuario registrado', true);
-            })
-            .catch(error => console.log(`Error al crear el alumno: ${error.message}`, false));
 
-        //Tras hacer el fecth, vamos a redirigir a la página de inicio tras un periodo de 5 segundos.
-        setTimeout(() => {
-            router.push('/');
-        }, 5000);
+                // Redirigir a la página de inicio tras un periodo de 2 segundos.
+                setTimeout(() => {
+                    router.push('/');
+                }, 2000);
+            })
+            .catch(error => {
+                aviso.value = `Error al crear el usuario: ${error.message}`;
+                avisoColor.value = 'red';
+                console.log(`Error al crear el usuario: ${error.message}`, false);
+            });
     }
 }
-
 </script>
 
 <template>
@@ -82,12 +89,11 @@ function crearUsuario() {
                 <label for="passwordCheck" class="form-label"><strong>Repetir contraseña</strong></label>
                 <input v-model="form.password2" name="passwordCheck" type="password" class="form-control" placeholder="Repetir contraseña" required />
             </div>
-            <p style="color:red">{{ aviso }}</p>
+            <p :style="{ color: avisoColor }">{{ aviso }}</p>
             <button type="submit" class="btn btn-custom">Registrarse</button>
             <br>
             <br>
             <p>¿Ya tienes cuenta? <RouterLink to="/login" style="color: #018481;">Iniciar sesión</RouterLink></p>
-
         </form>
     </div>
 </template>

@@ -38,15 +38,14 @@ const formatearFecha = (fecha) => {
   const [yyyy, mm, dd] = fecha.split("-");
   return `${dd}/${mm}/${yyyy}`;
 };
-
-// Filtrar rutas según el input del usuario
+//Esta función filtra por el buscador y por la fecha. Para ello usamos COMPUTED y además comparamos la fecha.
 const rutasFiltradas = computed(() => {
   return rutas.value.map(ruta => ({
     ...ruta,
     horaFormateada: formatearHora(ruta.hora),
     fechaFormateada: formatearFecha(ruta.fecha)
   })).filter(ruta =>
-    ruta.localidad.toLowerCase().includes(filtroCiudad.value.toLowerCase())
+    ruta.localidad.toLowerCase().includes(filtroCiudad.value.toLowerCase()) && ruta.fecha >= new Date().toISOString()
   );
 });
 
@@ -55,7 +54,8 @@ const totalPages = computed(() => {
   return Math.ceil(rutasFiltradas.value.length / itemsPerPage);
 });
 
-// Obtener las rutas para la página actual
+/* Obtener las rutas para la página actual, teniendo en cuenta la fecha de esta para solo mostrar las que son futuras
+ y no pasadas*/
 const rutasPaginadas = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage;
   const end = start + itemsPerPage;

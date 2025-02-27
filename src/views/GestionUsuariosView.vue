@@ -1,10 +1,14 @@
 <script setup>
 import { ref } from "vue";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 document.title = "Gestión de usuarios";
 
 const usuarios = ref([]);
 const rolesDisponibles = ["admin", "cliente", "guia"];
+const usuarioAEliminar = ref(null);
+let eliminarModal = null;
 
 // Obtener la lista de usuarios
 fetch('http://localhost/APIFreetours/api.php/usuarios', {
@@ -30,23 +34,28 @@ function actualizarRol(id, nuevoRol) {
     .then(response => response.json())
     .then(data => {
       console.log(`Rol actualizado para el usuario con ID ${id}:`, data);
-      alert(`Rol del usuario ${id} actualizado a ${nuevoRol}`);
     })
     .catch(error => console.error('Error al actualizar el rol:', error));
 }
 
+// Función para abrir el modal de confirmación
+function confirmarEliminacion(usuario) {
+  usuarioAEliminar.value = usuario;
+  eliminarModal = new bootstrap.Modal(document.getElementById('confirmarEliminacionModal'));
+  eliminarModal.show();
+}
+
 // Función para eliminar un usuario
-function eliminarUsuario(id) {
-  if (confirm(`¿Estás seguro de que deseas eliminar al usuario con ID ${id}?`)) {
-    fetch(`http://localhost/APIFreetours/api.php/usuarios?id=${id}`, {
+function eliminarUsuario() {
+  if (usuarioAEliminar.value) {
+    fetch(`http://localhost/APIFreetours/api.php/usuarios?id=${usuarioAEliminar.value.id}`, {
       method: 'DELETE',
     })
       .then(response => response.json())
       .then(data => {
-        console.log(`Usuario con ID ${id} eliminado:`, data);
-        alert(`Usuario con ID ${id} eliminado correctamente`);
-        // Actualizamos la lista de usuarios eliminando el usuario localmente
-        usuarios.value = usuarios.value.filter(usuario => usuario.id !== id);
+        console.log(`Usuario con ID ${usuarioAEliminar.value.id} eliminado:`, data);
+        usuarios.value = usuarios.value.filter(usuario => usuario.id !== usuarioAEliminar.value.id);
+        eliminarModal.hide();
       })
       .catch(error => console.error('Error al eliminar el usuario:', error));
   }
@@ -56,7 +65,7 @@ function eliminarUsuario(id) {
 <template>
   <div class="usuarios-container">
     <h2>Gestión de Usuarios</h2>
-    <table class="usuarios-table">
+    <table class="usuarios-table table table-striped table-hover">
       <thead>
         <tr>
           <th>ID</th>
@@ -72,18 +81,37 @@ function eliminarUsuario(id) {
           <td>{{ usuario.nombre }}</td>
           <td>{{ usuario.email }}</td>
           <td>
-            <select v-model="usuario.rol" @change="actualizarRol(usuario.id, usuario.rol)">
+            <select v-model="usuario.rol" @change="actualizarRol(usuario.id, usuario.rol)" class="form-select">
               <option v-for="rol in rolesDisponibles" :key="rol" :value="rol">
                 {{ rol }}
               </option>
             </select>
           </td>
           <td>
-            <button @click="eliminarUsuario(usuario.id)" class="btn-eliminar">Eliminar</button>
+            <button @click="confirmarEliminacion(usuario)" class="btn btn-danger">Eliminar</button>
           </td>
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <!-- Modal de confirmación -->
+  <div class="modal fade" id="confirmarEliminacionModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalLabel">Confirmar eliminación</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          ¿Estás seguro de que deseas eliminar al usuario <strong>{{ usuarioAEliminar?.nombre }}</strong>?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" @click="eliminarUsuario">Eliminar</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -100,42 +128,5 @@ function eliminarUsuario(id) {
 h2 {
   text-align: center;
   color: #018481;
-}
-
-.usuarios-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-}
-
-th, td {
-  padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
-
-th {
-  background-color: #018481;
-  color: #ffffff;
-}
-
-select {
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.btn-eliminar {
-  background-color: #e34f65;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.btn-eliminar:hover {
-  background-color: #c13c52;
 }
 </style>

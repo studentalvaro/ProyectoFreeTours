@@ -24,8 +24,8 @@ function cerrarSesion() {
             </RouterLink>
 
             <div v-if="propSesion" class="text-center text-sm-start">
-                <h2 class="h5 mb-0" v-if="route.path=='/'">¡Bienvenid@, {{ propSesion.nombre }}!</h2>
-                <h2 class="h5 mb-0" v-else> Estás en {{ route.name }}</h2>
+                <h2 class="h5 mb-0" v-if="route.path=='/'">¡Bienvenid@, <strong>{{ propSesion.nombre }}!</strong></h2>
+                <h2 class="h5 mb-0" v-else> Estás en <strong>{{ route.name }}</strong></h2>
             </div>
 
             <div class="d-flex justify-content-center">
