@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, nextTick } from 'vue';
+import { ref, onMounted } from 'vue';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -55,12 +55,11 @@ const fetchReservas = () => {
                         const now = new Date();
                         reservasPendientes.value = reservasConDetalles.filter(reserva => new Date(`${reserva.fechaISO}T${reserva.hora}`) >= now);
                         reservasRealizadas.value = reservasConDetalles.filter(reserva => new Date(`${reserva.fechaISO}T${reserva.hora}`) < now);
-                        nextTick(() => {
-                            reservasConDetalles.forEach(reserva => {
-                                if (reserva.latitud && reserva.longitud) {
-                                    initMap(reserva.id, reserva.latitud, reserva.longitud);
-                                }
-                            });
+
+                        reservasConDetalles.forEach(reserva => {
+                            if (reserva.latitud && reserva.longitud) {
+                                initMap(reserva.id, reserva.latitud, reserva.longitud);
+                            }
                         });
                     }
                 });
@@ -68,6 +67,7 @@ const fetchReservas = () => {
         })
         .catch(error => console.error('Error al obtener las reservas:', error));
 };
+
 
 const fetchRuta = (rutaId, callback) => {
     fetch(`http://localhost/APIFreetours/api.php/rutas?id=${rutaId}`)
