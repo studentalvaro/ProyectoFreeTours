@@ -46,7 +46,10 @@ const crearRuta = () => {
     .then(result => {
       mensaje.value = result.message;
       if (result.status === "success") {
-        router.push("/crearruta");
+        //Recargamos tras 2 segundos a la propia página
+        setTimeout(() => {
+          router.go();
+        }, 2000);
       }
     })
     .catch(error => {
@@ -70,8 +73,9 @@ const obtenerGuiasDisponibles = (newFecha) => {
       });
   }
 };
-//Leaflet
-const searchLocation = async () => {
+
+const searchLocation = async (event) => {
+  event.preventDefault();
   if (!address.value) return;
 
   const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address.value)}`);
@@ -93,7 +97,7 @@ const searchLocation = async () => {
 };
 
 onMounted(() => {
-  map = L.map('map').setView([40.4168, -3.7038], 13); // Madrid por defecto
+  map = L.map('map').setView([40.4168, -3.7038], 13);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap contributors'
@@ -139,9 +143,9 @@ onMounted(() => {
         <input id="hora" v-model="hora" type="time" required />
       </div>
       <div>
-      <input v-model="address" @keyup.enter="searchLocation" placeholder="Buscar dirección" class="input" />
-    </div>
-    <div id="map" style="height: 400px; margin-top: 20px;"></div>
+        <input v-model="address" @keydown.enter.prevent="searchLocation" placeholder="Buscar dirección" class="input" />
+      </div>
+      <div id="map" style="height: 400px; margin-top: 20px;"></div>
       <div>
         <label for="guiaId">ID del Guía</label>
         <select id="guiaId" v-model="guiaId">
@@ -205,13 +209,5 @@ button:hover {
   margin-top: 20px;
   font-weight: bold;
   color: #018481;
-}
-
-.input {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  margin-top: 20px;
 }
 </style>
