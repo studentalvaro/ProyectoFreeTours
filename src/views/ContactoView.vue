@@ -1,6 +1,8 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 
+document.title = "Sobre nosotros";
+
 // Refs para los elementos del DOM
 const medio = ref(null);
 const play = ref('\u25BA'); // Ícono de Play por defecto
@@ -93,7 +95,9 @@ onMounted(iniciar);
       </div>
       <div class="descripcion">
         <h2 class="titulo-descripcion">¡Descubre la magia de los Free Tours en España!</h2>
-        <p class="descripcion-texto">Los Free Tours te permiten explorar las ciudades más hermosas de España con un guía local, sin costo fijo, y con la oportunidad de decidir lo que quieres pagar según tu experiencia. ¡Es la manera perfecta de conocer los rincones ocultos, la historia y la cultura de cada lugar!</p>
+        <p class="descripcion-texto">Los Free Tours te permiten explorar las ciudades más hermosas de España con un guía local, y con la oportunidad de decidir lo que quieres pagar según tu experiencia. ¡Es la manera perfecta de conocer los rincones ocultos, la historia y la cultura de cada lugar!</p>
+        <p class="descripcion-texto">Somos apasionados de descubrir. Es por esto que animamos a nuestros clientes a embarcarse en experiencias culturales, gastronómicas, rurales... Descubrir mundo es ganar vida.</p>
+      
       </div>
     </div>
 
