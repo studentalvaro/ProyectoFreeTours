@@ -34,7 +34,7 @@ const fetchReservas = () => {
                 fetchRuta(reserva.ruta_id, (rutaDetalles) => {
                     const fechaISO = rutaDetalles ? rutaDetalles.fecha : '';
                     const reservaConDetalles = {
-                        id: reserva.reserva_id,
+                        id: rutaDetalles ? rutaDetalles.id : reserva.ruta_id, // Aquí tomamos el id de la ruta
                         titulo: rutaDetalles ? rutaDetalles.titulo : 'Sin título',
                         localidad: rutaDetalles ? rutaDetalles.localidad : 'Sin localidad',
                         fecha: fechaISO ? formatFecha(fechaISO) : 'Desconocida',
@@ -122,7 +122,7 @@ const initMap = (reservaId, lat, lon) => {
 };
 
 const abrirModalValorar = (reserva) => {
-    rutaValorada.value = reserva;
+    rutaValorada.value = reserva; // Se guarda la ruta, no la reserva
     estrellas.value = 5;
     comentario.value = '';
     modalVisible.value = true;
@@ -135,7 +135,7 @@ const cerrarModal = () => {
 const enviarValoracion = () => {
     const nuevaValoracion = {
         user_id: sesion.id,
-        ruta_id: rutaValorada.value.id,
+        ruta_id: rutaValorada.value.id, // Usamos el id de la ruta
         estrellas: estrellas.value,
         comentario: comentario.value
     };
