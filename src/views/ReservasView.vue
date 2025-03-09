@@ -10,6 +10,10 @@ const userEmail = sesion.email || '';
 const reservasPendientes = ref([]);
 const reservasRealizadas = ref([]);
 const mapas = ref({});
+const modalVisible = ref(false);
+const rutaValorada = ref(null);
+const estrellas = ref(5);
+const comentario = ref('');
 
 const fetchReservas = () => {
     if (!userEmail) {
@@ -117,6 +121,49 @@ const initMap = (reservaId, lat, lon) => {
     }
 };
 
+const abrirModalValorar = (reserva) => {
+    rutaValorada.value = reserva;
+    estrellas.value = 5; // Puntuación por defecto
+    comentario.value = ''; // Comentario vacío
+    modalVisible.value = true;
+};
+
+const cerrarModal = () => {
+    modalVisible.value = false;
+};
+
+const enviarValoracion = () => {
+    const nuevaValoracion = {
+        user_id: sesion.id, // Cambiar por el ID del usuario real
+        ruta_id: rutaValorada.value.id,
+        estrellas: estrellas.value,
+        comentario: comentario.value
+    };
+
+    console.log(nuevaValoracion);
+    
+    fetch('http://localhost/APIFreetours/api.php/valoraciones', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(nuevaValoracion)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la solicitud: ' + response.status);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Valoración creada:', data);
+        cerrarModal();
+    })
+    .catch(error => {
+        console.error('Error al crear la valoración:', error);
+    });
+};
+
 onMounted(fetchReservas);
 </script>
 
@@ -152,9 +199,37 @@ onMounted(fetchReservas);
                         <p class="card-text"><strong>Localidad:</strong> {{ reserva.localidad }}</p>
                         <p class="card-text"><strong>Fecha:</strong> {{ reserva.fecha }}</p>
                         <p class="card-text"><strong>Hora:</strong> {{ reserva.hora }}</p>
-                        <button class="btn btn-warning btn-sm">Valorar</button>
+                        <button class="btn btn-warning btn-sm" @click="abrirModalValorar(reserva)">Valorar</button>
                     </div>
                     <div :id="`map-${reserva.id}`" class="map"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de valoración -->
+        <div v-if="modalVisible" class="modal" tabindex="-1" style="display: block;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Valorar Ruta</h5>
+                        <button type="button" class="btn-close" @click="cerrarModal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <label for="estrellas">Estrellas</label>
+                            <select v-model="estrellas" id="estrellas" class="form-select">
+                                <option v-for="i in 5" :key="i" :value="i">{{ i }}</option>
+                            </select>
+                        </div>
+                        <div class="mt-2">
+                            <label for="comentario">Comentario (opcional)</label>
+                            <textarea v-model="comentario" id="comentario" class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @click="cerrarModal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" @click="enviarValoracion">Enviar valoración</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -166,7 +241,7 @@ onMounted(fetchReservas);
     max-width: 1200px;
     margin: auto;
 }
-.btn-primary{
+.btn-primary {
     background-color: #018481;
 }
 .section-title {
@@ -196,7 +271,27 @@ onMounted(fetchReservas);
     margin: 20px;
 }
 
-.btn-warning {
-    color: white !important;
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-dialog {
+    max-width: 400px;
+}
+
+.modal-header .btn-close {
+    background-color: transparent;
+    border: none;
+}
+.btn-warning{
+    color: white;
 }
 </style>

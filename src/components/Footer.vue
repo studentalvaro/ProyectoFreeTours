@@ -11,7 +11,7 @@
             <div class="footer-links">
                 <router-link to="/" class="footer-link">Inicio</router-link>
                 <router-link to="/" class="footer-link">Rutas</router-link>
-                <router-link to="/" class="footer-link">Contacto</router-link>
+                <router-link to="/contacto" class="footer-link">Contacto</router-link>
             </div>
 
             <!-- Redes sociales -->

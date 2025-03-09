@@ -7,6 +7,7 @@ document.title = "Login";
 const emit = defineEmits(["sesionIniciada"]);
 const form = ref({ email: '', password: '' });
 const aviso = ref('');
+const avisoColor = ref('');
 
 //Función para iniciar sesión
 function iniciarSesion() {
@@ -29,16 +30,19 @@ function iniciarSesion() {
             localStorage.setItem("sesion", JSON.stringify(data.user));
             emit("sesionIniciada", data.user);
             aviso.value = "Login correcto, redirigiendo...";
+            avisoColor.value = 'green';
             setTimeout(() => {
                 router.push('/');
             }, 2000);
         } else {
             aviso.value = "Error de login: " + data.message;
+            avisoColor.value = 'red';
             console.log('Error de login:', data.message);
         }
     })
     .catch(error => {
         aviso.value = "Error de conexión, revisa tu internet";
+        avisoColor.value = 'red';
         console.error('Error en el inicio de sesión:', error);
     });
 }
@@ -47,7 +51,7 @@ function iniciarSesion() {
 <template>
     <div class="login-container">
         <form @submit.prevent="iniciarSesion" class="p-4 border rounded shadow-sm bg-white">
-            <p>{{ aviso }}</p>
+            <p :style="{ color: avisoColor }">{{ aviso }}</p>
             <div class="mb-3">
                 <label for="user" class="form-label"><strong>Usuario</strong></label>
                 <input v-model="form.email" name="user" type="text" class="form-control" placeholder="Usuario" required>
