@@ -123,8 +123,8 @@ const initMap = (reservaId, lat, lon) => {
 
 const abrirModalValorar = (reserva) => {
     rutaValorada.value = reserva;
-    estrellas.value = 5; // Puntuación por defecto
-    comentario.value = ''; // Comentario vacío
+    estrellas.value = 5;
+    comentario.value = '';
     modalVisible.value = true;
 };
 
@@ -134,7 +134,7 @@ const cerrarModal = () => {
 
 const enviarValoracion = () => {
     const nuevaValoracion = {
-        user_id: sesion.id, // Cambiar por el ID del usuario real
+        user_id: sesion.id,
         ruta_id: rutaValorada.value.id,
         estrellas: estrellas.value,
         comentario: comentario.value

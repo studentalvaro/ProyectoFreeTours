@@ -11,6 +11,7 @@ const props = defineProps({
     <!--En caso de admin-->
     <div v-if="propSesion?.rol == 'admin'" class="d-flex justify-content-center">
       <RouterLink to="/" class="nav-link">Ver tours</RouterLink>
+      <RouterLink to="/contacto" class="nav-link">Sobre nosotros</RouterLink>
       <RouterLink to="/crearruta" class="nav-link">Crear ruta</RouterLink>
       <RouterLink to="/gestionarruta" class="nav-link">Gestión rutas</RouterLink>
       <RouterLink to="/gestionusuarios" class="nav-link">Gestión usuarios</RouterLink>
@@ -19,12 +20,14 @@ const props = defineProps({
     <!--En caso de guia-->
     <div v-if="propSesion?.rol == 'guia'" class="d-flex justify-content-center">
       <RouterLink to="/" class="nav-link">Ver tours</RouterLink>
+      <RouterLink to="/contacto" class="nav-link">Sobre nosotros</RouterLink>
       <RouterLink to="/verrutas" class="nav-link">Ver rutas</RouterLink>
     </div>
     
     <!--En caso de cliente-->
     <div v-if="propSesion?.rol == 'cliente'" class="d-flex justify-content-center">
       <RouterLink to="/" class="nav-link">Ver tours</RouterLink>
+      <RouterLink to="/contacto" class="nav-link">Sobre nosotros</RouterLink>
       <RouterLink to="/reservas" class="nav-link">Mis reservas</RouterLink>
     </div>
   </nav>
