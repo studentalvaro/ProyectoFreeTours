@@ -1,7 +1,12 @@
 <script setup>
 import { ref, onMounted, nextTick } from "vue";
+import router from "@/router";
 
 document.title = "Gestión de rutas";
+
+if(!localStorage.getItem("sesion") || JSON.parse(localStorage.getItem("sesion")).rol !== "admin") {
+  router.push('/');
+}
 
 const rutas = ref([]);
 const mensaje = ref("");

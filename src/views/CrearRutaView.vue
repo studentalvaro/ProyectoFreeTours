@@ -6,6 +6,10 @@ import 'leaflet/dist/leaflet.css';
 
 document.title = "Crear ruta";
 
+if(!localStorage.getItem("sesion") || JSON.parse(localStorage.getItem("sesion")).rol !== "admin") {
+  router.push('/');
+}
+
 const titulo = ref("");
 const localidad = ref("");
 const descripcion = ref("");

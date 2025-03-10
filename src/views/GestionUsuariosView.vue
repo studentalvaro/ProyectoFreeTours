@@ -5,6 +5,10 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 document.title = "Gestión de usuarios";
 
+if(!localStorage.getItem("sesion") || JSON.parse(localStorage.getItem("sesion")).rol !== "admin") {
+  router.push('/');
+}
+
 const usuarios = ref([]);
 const rolesDisponibles = ["admin", "cliente", "guia"];
 const usuarioAEliminar = ref(null);
