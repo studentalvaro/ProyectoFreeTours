@@ -7,7 +7,7 @@
             <!-- Sección de derechos de autor -->
             <p class="copyright">&copy; Realizado por Álvaro Beltrán Santiago. Todos los derechos reservados.</p>
 
-            <!-- Enlaces importantes -->
+            <!-- Enlaces -->
             <div class="footer-links">
                 <router-link to="/" class="footer-link">Inicio</router-link>
                 <router-link to="/" class="footer-link">Rutas</router-link>

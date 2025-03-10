@@ -5,10 +5,10 @@ document.title = "Sobre nosotros";
 
 // Refs para los elementos del DOM
 const medio = ref(null);
-const play = ref('\u25BA'); // Ícono de Play por defecto
-const silenciar = ref("🔊"); // Ícono de volumen por defecto
+const play = ref('\u25BA');
+const silenciar = ref("🔊");
 
-// Lógica de control de video
+// Controles del video
 const accionPlay = () => {
   if (!medio.value.paused && !medio.value.ended) {
     medio.value.pause();
@@ -24,7 +24,7 @@ const accionPlay = () => {
 const accionReiniciar = () => {
   medio.value.currentTime = 0;
   medio.value.play();
-  play.value = '||'; // El ícono de Pause
+  play.value = '||';
 };
 
 const accionRetrasar = () => {

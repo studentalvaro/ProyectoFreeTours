@@ -17,6 +17,7 @@ const estrellas = ref(5);
 const comentario = ref('');
 const reservaAEliminar = ref(null); // Para almacenar la reserva a eliminar
 
+//Obtiene todas las reservas
 const fetchReservas = () => {
     if (!userEmail) {
         console.error('No se encontró un email en el localStorage');
@@ -68,7 +69,6 @@ const fetchReservas = () => {
         .catch(error => console.error('Error al obtener las reservas:', error));
 };
 
-
 const fetchRuta = (rutaId, callback) => {
     fetch(`http://localhost/APIFreetours/api.php/rutas?id=${rutaId}`)
         .then(response => response.json())
@@ -82,6 +82,7 @@ const fetchRuta = (rutaId, callback) => {
         });
 };
 
+//Eliminar una reserva
 const eliminarReserva = () => {
     console.log('Intentando eliminar reserva con ID:', reservaAEliminar.value.id2);
     if (!reservaAEliminar.value) {
@@ -110,13 +111,13 @@ const abrirModalConfirmacion = (reserva) => {
 const cerrarModalConfirmacion = () => {
     modalConfirmVisible.value = false; // Cerramos el modal de confirmación
 };
-
+//Formateamos la fecha
 const formatFecha = (fechaISO) => {
     const meses = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
     const [year, month, day] = fechaISO.split('-');
     return `${parseInt(day)} de ${meses[parseInt(month) - 1]} de ${year}`;
 };
-
+//Formateamos la hora
 const formatHora = (hora) => {
     const [hours, minutes] = hora.split(':');
     return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
@@ -133,9 +134,9 @@ const initMap = (reservaId, lat, lon) => {
         mapas.value[reservaId] = map;
     }
 };
-
+//Cogemos los datos de la reserva al abrir el modal
 const abrirModalValorar = (reserva) => {
-    rutaValorada.value = reserva; // Se guarda la ruta, no la reserva
+    rutaValorada.value = reserva;
     estrellas.value = 5;
     comentario.value = '';
     modalVisible.value = true;
@@ -145,6 +146,7 @@ const cerrarModal = () => {
     modalVisible.value = false;
 };
 
+//Enviar una valoración
 const enviarValoracion = () => {
     const nuevaValoracion = {
         user_id: sesion.id,
@@ -180,8 +182,8 @@ const enviarValoracion = () => {
 onMounted(fetchReservas);
 </script>
 
-
 <template>
+    <!-- Rutas con fecha aún no pasada-->
     <div class="contenedor">        
         <h2 class="section-title">Rutas Pendientes</h2>
         <div class="row">
@@ -202,7 +204,7 @@ onMounted(fetchReservas);
                 </div>
             </div>
         </div>
-
+        <!--Rutas con la fecha pasada-->
         <h2 class="section-title">Rutas Realizadas</h2>
         <div class="row">
             <div class="col-12 mb-4" v-for="reserva in reservasRealizadas" :key="reserva.id">

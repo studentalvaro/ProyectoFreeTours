@@ -63,7 +63,7 @@ function eliminarUsuario() {
 </script>
 
 <template>
-  <div class="usuarios-container">
+  <div class="usuarios-container table-responsive">
     <h2>Gestión de Usuarios</h2>
     <table class="usuarios-table table table-striped table-hover">
       <thead>
